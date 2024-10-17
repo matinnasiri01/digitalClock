@@ -31,3 +31,37 @@ google-services.json
 
 # Android Profiling
 *.hprof
+# Built application files
+/build/
+
+# Gradle files
+.gradle
+
+# IDE settings
+/.idea/
+
+# Unnecessary files
+*.mp
+
+# Generated files (adapt based on your project)
+/gen/
+
+# Test output (if applicable)
+**/test*.xml
+
+# Cache folders
+**/.gradle/cache/
+**/.gradle/wrapper/
+
+# Android Studio temporary folders (you might not need these)
+buildSrcTmp/
+distTmp/
+outTmp/
+
+# Version control backups
+*.orig
+*.rej
+
+# Temporary files
+*~
+*.swp
