@@ -1,6 +1,8 @@
 package io.nasiri.clock.ui.item
 
+import android.util.Log
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -22,48 +24,48 @@ fun SingleCounter(
     require(active.size == 7) { "The 'active' list must have exactly 7 elements." }
 
     val boxHeight = boxWidth * 2
-    val spacerHeight = boxHeight * .05f
+    val spacerHeight = boxHeight * .02f
     val sSize = boxWidth * .2f
     val bSize = boxWidth * .8f
+    val bHSize = boxWidth * .86f
     val pointerSize = bSize * .125f
 
     Box(modifier = modifier.size(width = boxWidth, height = boxHeight)) {
         Row(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier
+                .fillMaxSize(),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Column {
+            Column(verticalArrangement = Arrangement.spacedBy(spacerHeight)) {
                 SiItem(
                     isActive = active[1],
                     activeColor = showColor,
                     width = sSize,
-                    height = bSize,
+                    height = bHSize,
                     pointerSize = pointerSize
                 )
-                Spacer(modifier = Modifier.height(spacerHeight))
                 SiItem(
                     isActive = active[4],
                     activeColor = showColor,
                     width = sSize,
-                    height = bSize,
+                    height = bHSize,
                     pointerSize = pointerSize
                 )
             }
-            Column {
+            Column(verticalArrangement = Arrangement.spacedBy(spacerHeight)) {
                 SiItem(
                     isActive = active[2],
                     activeColor = showColor,
                     width = sSize,
-                    height = bSize,
+                    height = bHSize,
                     pointerSize = pointerSize
                 )
-                Spacer(modifier = Modifier.height(spacerHeight))
                 SiItem(
                     isActive = active[5],
                     activeColor = showColor,
                     width = sSize,
-                    height = bSize,
+                    height = bHSize,
                     pointerSize = pointerSize
                 )
             }
