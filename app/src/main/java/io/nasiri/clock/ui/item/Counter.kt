@@ -17,124 +17,116 @@ fun SingleCounter(
     active: List<Boolean>,
     showColor: Color = Color.Blue,
     boxWidth: Dp = 100.dp,
-    boxHeight: Dp = 190.dp,
-    verticalPadding: Dp = 13.dp,
-    spacerHeight: Dp = 4.dp,
-    itemWidth: Dp = 20.dp,
-    itemHeight: Dp = 80.dp,
-    vpItemWidth: Dp = 80.dp,
-    vpItemHeight: Dp = 20.dp
 ) {
-    Box(
-        modifier = modifier.size(width = boxWidth, height = boxHeight)
-    ) {
+
+    require(active.size == 7) { "The 'active' list must have exactly 7 elements." }
+
+    val boxHeight = boxWidth * 2
+    val spacerHeight = boxHeight * .05f
+    val sSize = boxWidth * .2f
+    val bSize = boxWidth * .8f
+    val pointerSize = bSize * .125f
+
+    Box(modifier = modifier.size(width = boxWidth, height = boxHeight)) {
         Row(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(vertical = verticalPadding),
-            horizontalArrangement = Arrangement.SpaceBetween
+            modifier = Modifier.fillMaxSize(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
         ) {
             Column {
-                HeItem(
+                SiItem(
                     isActive = active[1],
                     activeColor = showColor,
-                    itemWidth = itemWidth,
-                    itemHeight = itemHeight
+                    width = sSize,
+                    height = bSize,
+                    pointerSize = pointerSize
                 )
                 Spacer(modifier = Modifier.height(spacerHeight))
-                HeItem(
+                SiItem(
                     isActive = active[4],
                     activeColor = showColor,
-                    itemWidth = itemWidth,
-                    itemHeight = itemHeight
+                    width = sSize,
+                    height = bSize,
+                    pointerSize = pointerSize
                 )
             }
             Column {
-                HeItem(
+                SiItem(
                     isActive = active[2],
                     activeColor = showColor,
-                    itemWidth = itemWidth,
-                    itemHeight = itemHeight
+                    width = sSize,
+                    height = bSize,
+                    pointerSize = pointerSize
                 )
                 Spacer(modifier = Modifier.height(spacerHeight))
-                HeItem(
+                SiItem(
                     isActive = active[5],
                     activeColor = showColor,
-                    itemWidth = itemWidth,
-                    itemHeight = itemHeight
+                    width = sSize,
+                    height = bSize,
+                    pointerSize = pointerSize
                 )
             }
         }
-        VoItem(
+        SiItem(
             modifier = Modifier.align(Alignment.TopCenter),
             isActive = active[0],
             activeColor = showColor,
-            vpItemWidth = vpItemWidth,
-            vpItemHeight = vpItemHeight
+            width = bSize,
+            height = sSize,
+            pointerSize = pointerSize
         )
-        VoItem(
+        SiItem(
             modifier = Modifier.align(Alignment.Center),
             isActive = active[3],
             activeColor = showColor,
-            vpItemWidth = vpItemWidth,
-            vpItemHeight = vpItemHeight
+            width = bSize,
+            height = sSize,
+            pointerSize = pointerSize
         )
-        VoItem(
+        SiItem(
             modifier = Modifier.align(Alignment.BottomCenter),
             isActive = active[6],
             activeColor = showColor,
-            vpItemWidth = vpItemWidth,
-            vpItemHeight = vpItemHeight
+            width = bSize,
+            height = sSize,
+            pointerSize = pointerSize
         )
     }
 }
 
 @Composable
-fun HeItem(
+fun SiItem(
     modifier: Modifier = Modifier,
     isActive: Boolean = false,
     activeColor: Color,
-    itemWidth: Dp = 20.dp,
-    itemHeight: Dp = 80.dp
+    width: Dp,
+    height: Dp,
+    pointerSize: Dp
 ) {
-    Canvas(
-        modifier = modifier
-            .width(itemWidth)
-            .height(itemHeight)
-    ) {
+    Canvas(modifier = modifier.size(width, height)) {
+
         val color = activeColor.copy(alpha = if (isActive) 1f else .1f)
-        val path = Path().apply {
-            moveTo(size.width / 2, 0f)
-            lineTo(0f, 10.dp.toPx())
-            lineTo(0f, (itemHeight - 10.dp).toPx())
-            lineTo(size.width / 2, size.height)
-        }
+
+        var path = createHorizontalPath(width.toPx(), height.toPx(), pointerSize.toPx())
+        if (width > height) path =
+            createVerticalPath(width.toPx(), height.toPx(), pointerSize.toPx())
+
         drawPath(path = path, color = color)
         rotate(180f) { drawPath(path = path, color = color) }
     }
 }
 
-@Composable
-fun VoItem(
-    modifier: Modifier = Modifier,
-    isActive: Boolean = false,
-    activeColor: Color,
-    vpItemWidth: Dp = 80.dp,
-    vpItemHeight: Dp = 20.dp
-) {
-    Canvas(
-        modifier = modifier
-            .width(vpItemWidth)
-            .height(vpItemHeight)
-    ) {
-        val color = activeColor.copy(alpha = if (isActive) 1f else .1f)
-        val path = Path().apply {
-            moveTo(size.width, size.height / 2)
-            lineTo(size.width - 10.dp.toPx(), 0f)
-            lineTo(size.width - (vpItemWidth - 10.dp).toPx(), 0f)
-            lineTo(0f, size.height / 2)
-        }
-        drawPath(path = path, color = color)
-        rotate(180f) { drawPath(path = path, color = color) }
-    }
+fun createVerticalPath(w: Float, h: Float, ps: Float): Path = Path().apply {
+    moveTo(0f, h / 2)
+    lineTo(ps, 0f)
+    lineTo(w - ps, 0f)
+    lineTo(w, h / 2)
+}
+
+fun createHorizontalPath(w: Float, h: Float, ps: Float): Path = Path().apply {
+    moveTo(w / 2, 0f)
+    lineTo(0f, ps)
+    lineTo(0f, h - ps)
+    lineTo(w / 2, h)
 }
