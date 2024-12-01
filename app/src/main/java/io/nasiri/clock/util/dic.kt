@@ -17,8 +17,29 @@ val new01 = mapOf(
     9 to listOf(1, 1, 1, 1, 0, 1, 1)
 )
 
-fun getCurrentFormattedDateTime(): List<String> {
+fun getCurrentTimeData(): TimeData {
+
     val calendar = Calendar.getInstance()
-    val dateFormat = SimpleDateFormat("HHmm dd MMM EEEE", Locale.ENGLISH)
-    return dateFormat.format(calendar.time).uppercase().split(" ")
+    val monthFormat = SimpleDateFormat("MMM", Locale.ENGLISH)
+    val dayNameFormat = SimpleDateFormat("EEEE", Locale.ENGLISH)
+
+    val hour = calendar.get(Calendar.HOUR_OF_DAY)
+    val minute = calendar.get(Calendar.MINUTE)
+
+    return TimeData(
+        hours = Pair(hour / 10, hour % 10),
+        minutes = Pair(minute / 10, minute % 10),
+        day = calendar.get(Calendar.DAY_OF_WEEK),
+        month = monthFormat.format(calendar.time),
+        dayName = dayNameFormat.format(calendar.time)
+    )
 }
+
+
+data class TimeData(
+    val hours: Pair<Int, Int>,
+    val minutes: Pair<Int, Int>,
+    val day: Int,
+    val month: String,
+    val dayName: String
+)

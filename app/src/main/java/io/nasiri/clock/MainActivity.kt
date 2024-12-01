@@ -7,11 +7,17 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.layout
 import io.nasiri.clock.ui.MainDigitalClock
 import io.nasiri.clock.ui.theme.ClockTheme
-import io.nasiri.clock.util.getCurrentFormattedDateTime
+import io.nasiri.clock.util.getCurrentTimeData
+import kotlinx.coroutines.delay
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -20,9 +26,17 @@ class MainActivity : ComponentActivity() {
         setContent {
             ClockTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+                    var currentTime by remember { mutableStateOf(getCurrentTimeData()) }
+
+                    LaunchedEffect(Unit) {
+                        while (true) {
+                            currentTime = getCurrentTimeData()
+                            delay(1000)
+                        }
+                    }
+
                     MainDigitalClock(
-                        modifier = Modifier.padding(innerPadding),
-                        data = getCurrentFormattedDateTime()
+                        modifier = Modifier.padding(innerPadding), data = currentTime
                     )
                 }
             }
