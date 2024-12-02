@@ -1,8 +1,10 @@
 package io.nasiri.clock.ui.item
 
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.*
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -18,7 +20,6 @@ fun SingleCounter(
     showColor: Color = Color.Blue,
     boxWidth: Dp = 100.dp,
 ) {
-
     require(active.size == 7) { "The 'active' list must have exactly 7 elements." }
 
     val boxHeight = boxWidth * 2
@@ -104,16 +105,19 @@ fun SiItem(
     height: Dp,
     pointerSize: Dp
 ) {
+    val animatedColor by animateColorAsState(
+        targetValue = if (isActive) activeColor else activeColor.copy(alpha = 0.1f),
+        animationSpec = tween(durationMillis = 400),
+        label = ""
+    )
+
     Canvas(modifier = modifier.size(width, height)) {
-
-        val color = activeColor.copy(alpha = if (isActive) 1f else .1f)
-
         var path = createHorizontalPath(width.toPx(), height.toPx(), pointerSize.toPx())
         if (width > height) path =
             createVerticalPath(width.toPx(), height.toPx(), pointerSize.toPx())
 
-        drawPath(path = path, color = color)
-        rotate(180f) { drawPath(path = path, color = color) }
+        drawPath(path = path, color = animatedColor)
+        rotate(180f) { drawPath(path = path, color = animatedColor) }
     }
 }
 
