@@ -13,7 +13,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.layout
 import io.nasiri.clock.ui.MainDigitalClock
 import io.nasiri.clock.ui.theme.ClockTheme
 import io.nasiri.clock.util.getCurrentTimeData
@@ -31,7 +30,7 @@ class MainActivity : ComponentActivity() {
                     LaunchedEffect(Unit) {
                         while (true) {
                             currentTime = getCurrentTimeData()
-                            delay(1000)
+                            delay(100)
                         }
                     }
 
@@ -41,15 +40,5 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
-    }
-}
-
-fun Modifier.vertical() = layout { measurable, constraints ->
-    val placeable = measurable.measure(constraints)
-    layout(placeable.height, placeable.width) {
-        placeable.place(
-            x = -(placeable.width / 2 - placeable.height / 2),
-            y = -(placeable.height / 2 - placeable.width / 2)
-        )
     }
 }
